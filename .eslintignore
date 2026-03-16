@@ -1,0 +1,18 @@
+# Test and temporary scripts (not part of the Next.js app)
+test-*.js
+test-*.mjs
+tmp-*.js
+check_policies.js
+migrate_*.mjs
+migrate_*.sql
+fix_rls_*.sql
+scripts/
+stitch_checkout.html
+dev_output.log
+
+# Build output
+.next/
+node_modules/
+
+# Public assets
+public/
