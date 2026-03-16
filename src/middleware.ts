@@ -29,6 +29,9 @@ const NOINDEX_PREFIXES = [
   '/admin-login',
   '/api',
   '/_next',
+  '/search',
+  '/checkout',
+  '/success',
 ];
 
 export function middleware(request: NextRequest) {

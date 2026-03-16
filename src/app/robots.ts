@@ -18,6 +18,8 @@ export default function robots(): MetadataRoute.Robots {
           '/checkout/',
           '/checkout',
           '/success',
+          '/search',
+          '/search/',
         ],
       },
     ],

@@ -86,13 +86,19 @@ export async function generateMetadata({
   const params = await searchParams;
   const searchQuery = params?.q as string | undefined;
 
-  return generateMetadataForPage("search", {
-    title: searchQuery ? `Search: ${searchQuery}` : "Search Products",
-    description: searchQuery
-      ? `Search results for "${searchQuery}"`
-      : "Search for products in our store",
-    image: "/search-og.jpg",
-  });
+  return {
+    ...generateMetadataForPage("search", {
+      title: searchQuery ? `Search: ${searchQuery}` : "Search Products",
+      description: searchQuery
+        ? `Search results for "${searchQuery}"`
+        : "Search for products in our store",
+      image: "/search-og.jpg",
+    }),
+    robots: {
+      index: false,
+      follow: false,
+    },
+  };
 }
 
 export default async function SearchPage({
