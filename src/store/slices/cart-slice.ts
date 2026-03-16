@@ -19,12 +19,14 @@ interface CartState {
   cart?: Cart;
   billingAddress: AddressDataTypes | null;
   shippingAddress: AddressDataTypes | null;
+  itemColors: Record<string, string>;
 }
 
 const initialState: CartState = {
   cart: undefined,
   billingAddress: null,
   shippingAddress: null,
+  itemColors: {},
 };
 
 const cartSlice = createSlice({
@@ -45,6 +47,11 @@ const cartSlice = createSlice({
       state.cart = undefined;
       state.billingAddress = null;
       state.shippingAddress = null;
+      state.itemColors = {};
+    },
+
+    setItemColor(state, action: PayloadAction<{ productId: string; color: string }>) {
+      state.itemColors[action.payload.productId] = action.payload.color;
     },
 
     setBillingAddress(state, action: PayloadAction<AddressDataTypes>) {
@@ -94,6 +101,7 @@ export const {
   setCheckoutAddresses,
   resetAddressStep,
   resetShippingStep,
+  setItemColor,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

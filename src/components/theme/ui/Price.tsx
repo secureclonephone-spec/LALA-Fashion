@@ -1,7 +1,9 @@
+import { CURRENCY_SYMBOL } from "@utils/constants";
+
 export const Price = ({
   amount,
   className,
-  currencyCode = "USD",
+  currencyCode: _currencyCode = "PKR",
   ...rest
 }: {
   amount: string;
@@ -9,10 +11,9 @@ export const Price = ({
   currencyCode: string;
 } & React.ComponentProps<"p">) => (
   <p className={className} suppressHydrationWarning={true} {...rest}>
-    {`${new Intl.NumberFormat(undefined, {
-      style: "currency",
-      currency: currencyCode,
-      currencyDisplay: "narrowSymbol",
+    {`${CURRENCY_SYMBOL} ${new Intl.NumberFormat("en-PK", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
     }).format(parseFloat(amount))}`}
   </p>
 );

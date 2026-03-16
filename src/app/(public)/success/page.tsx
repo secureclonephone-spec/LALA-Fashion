@@ -1,14 +1,15 @@
-import { ClearCartButton } from "@components/checkout/success/EmptyCart";
 import OrderDetail from "@components/cart/OrderDetail";
-import CheckSign from "@components/common/icons/CheckSign";
+
+export const metadata = {
+  title: "Order Confirmed | NaveedShop",
+  description: "Your order has been placed successfully.",
+};
 
 const SuccessPage = () => {
   return (
-    <div className="flex min-h-[calc(100vh-450px)] items-center px-4">
-      <div className="flex w-full flex-col items-center justify-center overflow-hidden">
-        <CheckSign className="h-28 w-28 sm:h-38 sm:w-38" />
+    <div className="bg-[#F8FAFC] min-h-screen pt-12 pb-20 px-4 flex flex-col items-center">
+      <div className="w-full max-w-4xl">
         <OrderDetail />
-        <ClearCartButton buttonName="Continue shopping" redirect="/" />
       </div>
     </div>
   );

@@ -36,6 +36,7 @@ import {
   ThemeCustomizationResponse,
   PageData,
 } from "@/types/theme/theme-customization";
+import { MockThemeCustomizationResponse, MockProductsResponse, MockHomeCategoriesResponse } from "./mockData";
 
 
 type ExtractVariables<T> = T extends { variables: object }
@@ -65,9 +66,24 @@ export async function bagistoFetch<T>({
   guestToken?: string;
   revalidate?: number;
 }): Promise<{ status: number; body: T } | never> {
+  const operationDef = typeof query === "string" ? null : (query as any).definitions?.find(
+    (def: any) => def.kind === 'OperationDefinition'
+  );
+  const queryName = typeof query === "string" ? "unknown" : (operationDef?.name?.value);
+  if (queryName === "themeCustomization") {
+    return { status: 200, body: { data: MockThemeCustomizationResponse } as any };
+  }
+  if (queryName === "GetProducts") {
+    return { status: 200, body: { data: MockProductsResponse } as any };
+  }
+  if (queryName === "Categories") {
+    return { status: 200, body: { data: MockHomeCategoriesResponse } as any };
+  }
+
+
   try {
     const queryString =
-      typeof query === "string" ? query : (query.loc?.source?.body ?? "");
+      typeof query === "string" ? query : ((query as any).loc?.source?.body ?? "");
 
     let bagistoCartId = "";
     let accessToken: string | undefined = undefined;
@@ -98,7 +114,7 @@ export async function bagistoFetch<T>({
 
     if (isCookies && headers) {
       if (headers instanceof Headers) {
-        headers.forEach((value, key) => (baseHeaders[key] = value));
+        (headers as Headers).forEach((value: string, key: string) => (baseHeaders[key] = value));
       } else {
         Object.assign(baseHeaders, headers);
       }
@@ -144,6 +160,21 @@ export async function bagistoFetchNoSession<T>({
   isCookies?: boolean;
   revalidate?: number;
 }): Promise<{ status: number; body: T } | never> {
+  const operationDef = typeof query === "string" ? null : (query as any).definitions?.find(
+    (def: any) => def.kind === 'OperationDefinition'
+  );
+  const queryName = typeof query === "string" ? "unknown" : (operationDef?.name?.value);
+  if (queryName === "themeCustomization") {
+    return { status: 200, body: { data: MockThemeCustomizationResponse } as any };
+  }
+  if (queryName === "GetProducts") {
+    return { status: 200, body: { data: MockProductsResponse } as any };
+  }
+  if (queryName === "Categories") {
+    return { status: 200, body: { data: MockHomeCategoriesResponse } as any };
+  }
+
+
   try {
     const result = await fetch(GRAPHQL_URL, {
       method: "POST",
@@ -404,6 +435,8 @@ export async function revalidate(req: NextRequest): Promise<NextResponse> {
 }
 
 export async function getHomePageData(): Promise<ThemeCustomizationResponse> {
+  return MockThemeCustomizationResponse as unknown as ThemeCustomizationResponse;
+
   const res = await bagistoFetch<{
     data: ThemeCustomizationResponse;
     variables: { first: number };

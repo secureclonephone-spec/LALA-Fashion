@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { FC } from "react";
 import Link from "next/link";
@@ -65,7 +65,7 @@ function ThreeItemGridItem({ product, size, priority }: {
                         position: size === 'full' ? 'center' : 'bottom',
                         title: product.name,
                         amount: String(product.type === 'configurable' ? (product.minimumPrice || '0') : (product.price || '0')),
-                        currencyCode: 'USD',
+                        currencyCode: 'PKR',
                     }}
                 />
             </Link>
@@ -104,7 +104,7 @@ function MobileThreeItemGridItem({ product, size, priority }: {
                         position: size === 'full' ? 'center' : 'bottom',
                         title: product.name,
                         amount: String(product.type === 'configurable' ? (product.minimumPrice || '0') : (product.price || '0')),
-                        currencyCode: 'USD',
+                        currencyCode: 'PKR',
                     }}
                 />
             </Link>
@@ -144,3 +144,4 @@ export const ThreeItemGrid: FC<ThreeItemGridProps> = ({ title, description, prod
 };
 
 export default ThreeItemGrid;
+

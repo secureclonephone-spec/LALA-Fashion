@@ -2,8 +2,10 @@ import { cache as reactCache } from "react";
 import { GRAPHQL_URL } from "@/utils/constants";
 import {
   ApolloClient,
+  ApolloLink,
   HttpLink,
   InMemoryCache,
+  Observable,
   from,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
@@ -40,7 +42,9 @@ function createApolloClient() {
   const cache = new InMemoryCache();
 
   const httpLink = new HttpLink({
-    uri: ssrMode ? GRAPHQL_URL : "/api/graphql",
+    uri: ssrMode
+      ? `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/graphql`
+      : "/api/graphql",
     credentials: "include",
   });
 
@@ -73,7 +77,30 @@ function createApolloClient() {
     };
   });
 
-  const link = from([authLink, httpLink]);
+  // Local mutation interceptor - handles mutations that don't need a real backend
+  const localMutationLink = new ApolloLink((operation, forward) => {
+    const operationName = operation.operationName;
+
+    // Intercept cart mutations that we now handle locally in Redux
+    const localHandledMutations: Record<string, unknown> = {
+      createAddProductInCart: { data: { createAddProductInCart: { addProductInCart: { success: true, message: "Success" } } } },
+      createReadCart: { data: { createReadCart: { readCart: null } } },
+      RemoveCartItem: { data: { createRemoveCartItem: { removeCartItem: { success: true } } } },
+      UpdateCartItem: { data: { createUpdateCartItem: { updateCartItem: { success: true } } } },
+      GetCartItem: { data: { createReadCart: { readCart: null } } },
+    };
+
+    if (localHandledMutations[operationName]) {
+      return new Observable((observer) => {
+        observer.next(localHandledMutations[operationName] as any);
+        observer.complete();
+      });
+    }
+
+    return forward(operation);
+  });
+
+  const link = from([localMutationLink, authLink, httpLink]);
 
   return new ApolloClient({
     ssrMode,

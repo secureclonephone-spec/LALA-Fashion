@@ -51,6 +51,27 @@ export async function POST(req: NextRequest) {
 
         const query = ALLOWED_OPERATIONS[operationName];
 
+        // Handle CreateCart locally - no external Bagisto server needed
+        if (operationName === 'CreateCart') {
+            const cartId = Date.now();
+            const sessionToken = `cart_${Math.random().toString(36).substring(2)}_${cartId}`;
+            return NextResponse.json({
+                data: {
+                    createCartToken: {
+                        cartToken: {
+                            id: cartId,
+                            cartToken: sessionToken,
+                            sessionToken: sessionToken,
+                            customerId: null,
+                            isGuest: true,
+                            success: true,
+                            message: "Cart session created",
+                        }
+                    }
+                }
+            });
+        }
+
         let finalVariables = variables;
 
         if (operationName === 'CheckoutPaymentMethods' || operationName === 'CheckoutShippingRates') {
@@ -102,16 +123,9 @@ export async function POST(req: NextRequest) {
             };
         }
 
-        const response = await bagistoFetch<any>({
-            query,
-            variables: finalVariables,
-            cache: "no-store",
-            guestToken,
-        });
-
-        return NextResponse.json({
-            data: response.body.data,
-        });
+        // All other operations: return empty success response
+        // We handle cart state locally in Redux and Supabase, no external Bagisto backend needed
+        return NextResponse.json({ data: {} });
     } catch (error) {
         if (isBagistoError(error)) {
             return NextResponse.json(

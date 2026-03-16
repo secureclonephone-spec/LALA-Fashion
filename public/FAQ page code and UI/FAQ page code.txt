@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Frequently Asked Questions</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter for clean typography -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  </style>
+<style data-purpose="background-pattern">
+    /* Subtle dot pattern for the top section as seen in the image */
+    .bg-dot-pattern {
+      background-image: radial-gradient(#e5e7eb 0.8px, transparent 0.8px);
+      background-size: 24px 24px;
+    }
+  </style>
+<style data-purpose="custom-styling">
+    .faq-item-transition {
+      transition: all 0.3s ease-in-out;
+    }
+    .text-grey-faded {
+      color: #94a3b8;
+    }
+    .border-subtle {
+      border-color: #f1f5f9;
+    }
+  </style>
+</head>
+<body class="bg-white text-slate-900">
+<!-- BEGIN: HeroHeader -->
+<header class="relative pt-16 pb-12 overflow-hidden" data-purpose="main-header">
+<!-- Dot pattern overlay for top part -->
+<div class="absolute inset-0 bg-dot-pattern opacity-40 pointer-events-none" style="height: 300px;"></div>
+<div class="relative z-10 flex flex-col items-center text-center px-4">
+<!-- Dark Circular Logo Placeholder -->
+<div class="mb-6 flex items-center justify-center w-12 h-12 bg-black rounded-full overflow-hidden shadow-lg" data-purpose="logo">
+<div class="text-white font-bold text-xl">S</div>
+</div>
+<h1 class="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-4">
+        Frequently Asked Questions <span class="text-slate-400 font-medium">(FAQs)</span>
+</h1>
+<p class="text-lg text-slate-500 font-normal max-w-2xl">
+        Can't find what you're looking for? Check out our 
+        <a class="text-slate-900 underline decoration-slate-300 underline-offset-4 hover:decoration-slate-900 transition-colors" href="#">documentation</a>.
+      </p>
+</div>
+</header>
+<!-- END: HeroHeader -->
+<!-- BEGIN: FAQSection -->
+<main class="max-w-3xl mx-auto px-6 pb-32" data-purpose="faq-container">
+<div class="space-y-4">
+<!-- Item 1: Expanded -->
+<div class="faq-item rounded-2xl bg-slate-50 p-6 border border-transparent" data-purpose="faq-item-expanded">
+<div class="flex justify-between items-start cursor-pointer">
+<h3 class="text-base font-semibold text-slate-900">Is there a free trial available?</h3>
+<span class="text-slate-400 ml-4">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M20 12H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</span>
+</div>
+<div class="mt-3 text-slate-500 text-sm leading-relaxed max-w-xl">
+          Yes, you can try us for free for 30 days. If you want, we'll provide you with a free 30-minute onboarding call to get you up and running.
+        </div>
+</div>
+<!-- Item 2: Collapsed -->
+<div class="faq-item border-b border-subtle py-5 px-6" data-purpose="faq-item-collapsed">
+<div class="flex justify-between items-center cursor-pointer">
+<h3 class="text-base font-semibold text-slate-900">Can I change my plan later?</h3>
+<span class="text-slate-400 ml-4">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</span>
+</div>
+</div>
+<!-- Item 3: Collapsed -->
+<div class="faq-item border-b border-subtle py-5 px-6" data-purpose="faq-item-collapsed">
+<div class="flex justify-between items-center cursor-pointer">
+<h3 class="text-base font-semibold text-slate-900">What is your cancellation policy?</h3>
+<span class="text-slate-400 ml-4">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</span>
+</div>
+</div>
+<!-- Item 4: Collapsed -->
+<div class="faq-item border-b border-subtle py-5 px-6" data-purpose="faq-item-collapsed">
+<div class="flex justify-between items-center cursor-pointer">
+<h3 class="text-base font-semibold text-slate-900">Can other info be added to an invoice?</h3>
+<span class="text-slate-400 ml-4">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</span>
+</div>
+</div>
+<!-- Item 5: Collapsed -->
+<div class="faq-item border-b border-subtle py-5 px-6" data-purpose="faq-item-collapsed">
+<div class="flex justify-between items-center cursor-pointer">
+<h3 class="text-base font-semibold text-slate-900">How does billing work?</h3>
+<span class="text-slate-400 ml-4">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</span>
+</div>
+</div>
+<!-- Item 6: Collapsed -->
+<div class="faq-item border-b border-subtle py-5 px-6" data-purpose="faq-item-collapsed">
+<div class="flex justify-between items-center cursor-pointer">
+<h3 class="text-base font-semibold text-slate-900">How do I change my account email?</h3>
+<span class="text-slate-400 ml-4">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</span>
+</div>
+</div>
+<!-- Item 7: Collapsed -->
+<div class="faq-item border-b border-subtle py-5 px-6" data-purpose="faq-item-collapsed">
+<div class="flex justify-between items-center cursor-pointer">
+<h3 class="text-base font-semibold text-slate-900">How does support work?</h3>
+<span class="text-slate-400 ml-4">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</span>
+</div>
+</div>
+<!-- Item 8: Collapsed -->
+<div class="faq-item border-b border-subtle py-5 px-6" data-purpose="faq-item-collapsed">
+<div class="flex justify-between items-center cursor-pointer">
+<h3 class="text-base font-semibold text-slate-900">Do you provide tutorials?</h3>
+<span class="text-slate-400 ml-4">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</span>
+</div>
+</div>
+<!-- Item 9: Collapsed -->
+<div class="faq-item border-b border-subtle py-5 px-6" data-purpose="faq-item-collapsed">
+<div class="flex justify-between items-center cursor-pointer">
+<h3 class="text-base font-semibold text-slate-900">Can I use it for multiple projects?</h3>
+<span class="text-slate-400 ml-4">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</span>
+</div>
+</div>
+<!-- Item 10: Collapsed -->
+<div class="faq-item py-5 px-6" data-purpose="faq-item-collapsed">
+<div class="flex justify-between items-center cursor-pointer">
+<h3 class="text-base font-semibold text-slate-900">Do I need a team license?</h3>
+<span class="text-slate-400 ml-4">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</span>
+</div>
+</div>
+</div>
+</main>
+<!-- END: FAQSection -->
+</body></html>

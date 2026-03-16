@@ -7,6 +7,7 @@ import { Shimmer } from "@/components/common/Shimmer";
 
 interface ImageCarouselProps {
     options: {
+        timer?: number;
         images: {
             image: string;
             link: string;
@@ -16,7 +17,7 @@ interface ImageCarouselProps {
 }
 
 const ImageCarousel: FC<ImageCarouselProps> = ({ options }) => {
-    const { images } = options;
+    const { images, timer = 5000 } = options;
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
@@ -24,7 +25,7 @@ const ImageCarousel: FC<ImageCarouselProps> = ({ options }) => {
 
     const getFullImageUrl = useCallback((imagePath: string): string => {
         if (!imagePath) return "";
-        if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+        if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('/')) {
             return imagePath;
         }
 
@@ -42,8 +43,8 @@ const ImageCarousel: FC<ImageCarouselProps> = ({ options }) => {
 
         autoplayRef.current = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % images.length);
-        }, 5000);
-    }, [images]);
+        }, timer);
+    }, [images, timer]);
 
     const stopAutoplay = useCallback(() => {
         if (autoplayRef.current) {
@@ -113,7 +114,7 @@ const ImageCarousel: FC<ImageCarouselProps> = ({ options }) => {
     };
 
     return (
-        <section className="mt-7.5 w-full">
+        <div className="mt-7.5 w-full">
             <div
                 className="group relative w-full overflow-hidden rounded-xl md:rounded-2xl aspect-[1.97/1]"
                 style={{
@@ -181,14 +182,14 @@ const ImageCarousel: FC<ImageCarouselProps> = ({ options }) => {
                 })}
 
                 {images.length > 1 && (
-                    <div className="absolute bottom-4 left-1/2 z-0 flex -translate-x-1/2 gap-2 rounded-full bg-black/30 px-3 py-2 backdrop-blur-sm md:bottom-6">
+                    <div className="absolute bottom-4 left-1/2 z-0 flex items-center -translate-x-1/2 gap-1.5 rounded-full bg-black/40 px-3 py-1.5 backdrop-blur-md md:bottom-6">
                         {images.map((_, index) => (
                             <button
                                 key={index}
                                 onClick={() => handleDotClick(index)}
-                                className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${index === currentIndex
-                                    ? "w-8 bg-white"
-                                    : "w-2.5 bg-white/50 hover:bg-white/80 hover:w-4"
+                                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${index === currentIndex
+                                    ? "w-4 bg-white"
+                                    : "w-1.5 bg-white/50 hover:bg-white/80 hover:w-2"
                                     }`}
                                 type="button"
                                 aria-label={`Go to slide ${index + 1}`}
@@ -198,7 +199,7 @@ const ImageCarousel: FC<ImageCarouselProps> = ({ options }) => {
                     </div>
                 )}
             </div>
-        </section>
+        </div>
     );
 };
 

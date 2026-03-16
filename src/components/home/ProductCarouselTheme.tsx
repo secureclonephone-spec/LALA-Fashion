@@ -40,8 +40,10 @@ const Theme = ({ title, description, products }: ProductsSectionProps) => {
                   type: item.type,
                   isSaleable: item.isSaleable,
                 }}
-                specialPrice={""}
+                specialPrice={item.specialPrice ? String(item.specialPrice) : undefined}
                 priority={index < 4}
+                rating={item.rating || 0}
+                reviewCount={item.reviewCount || 0}
               />
             );
           })}

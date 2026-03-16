@@ -1,0 +1,31 @@
+NEXT_PUBLIC_SUPABASE_URL=https://chlpbadjuiicssxsbmpq.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=sb_publishable_45C3M5w_ymVkVAymmBggGQ_pe1uD_P-
+
+
+
+Project URL https://chlpbadjuiicssxsbmpq.supabase.co
+
+Publishable Key sb_publishable_45C3M5w_ymVkVAymmBggGQ_pe1uD_P-
+
+Direct connection string postgresql://postgres:[YOUR-PASSWORD]@db.chlpbadjuiicssxsbmpq.supabase.co:5432/postgres
+
+anon public eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNobHBiYWRqdWlpY3NzeHNibXBxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4OTkzMTAsImV4cCI6MjA4ODQ3NTMxMH0.b39FqBOpnpY7qOrwC2EHeHpE_k0Avn4FI3sNEWWsqbc
+
+
+service_role secret eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNobHBiYWRqdWlpY3NzeHNibXBxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3Mjg5OTMxMCwiZXhwIjoyMDg4NDc1MzEwfQ.U5BiXS9LBJHFmHqBZRra0uKDeKPQbsbc5fEi1Wi58Ag
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

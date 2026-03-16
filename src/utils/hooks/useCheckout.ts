@@ -2,6 +2,8 @@ import { useMutation } from "@apollo/client";
 import { useRouter } from "next/navigation";
 import { useCustomToast } from "./useToast";
 import { useDispatch } from "react-redux";
+import { useAppSelector } from "@/store/hooks";
+import { createClient } from "@/utils/supabase/client";
 import {
   clearCart,
 } from "@/store/slices/cart-slice";
@@ -23,6 +25,7 @@ export const useCheckout = () => {
   const { resetGuestToken } = useGuestCartToken();
   const { showToast } = useCustomToast();
   const dispatch = useDispatch();
+  const cartDetail = useAppSelector((state) => state.cartDetail);
   const { getCartDetail } = useCartDetail();
 
   const handleMutationError = (error: any) => {
@@ -116,9 +119,50 @@ export const useCheckout = () => {
   const [placeOrder, { loading: isPlaceOrder }] = useMutation(
     CREATE_CHECKOUT_ORDER,
     {
-      onCompleted: (response) => {
+      onCompleted: async (response) => {
         const responseData = response?.createCheckoutOrder?.checkoutOrder;
         if (responseData) {
+          try {
+             const supabase = createClient();
+             const cartItems = cartDetail?.cart?.items?.edges || [];
+             const orderId = responseData?.orderId || "unknown-" + Date.now();
+             
+             const shipAddr = cartDetail?.shippingAddress;
+             const addressStr = shipAddr ? `${shipAddr.firstName} ${shipAddr.lastName}, ${shipAddr.address}, ${shipAddr.city}, ${shipAddr.country}` : "N/A";
+             const phoneStr = shipAddr?.phone || "N/A";
+
+             const { data: orderData, error: orderError } = await supabase.from('orders').insert({
+                 order_number: orderId.toString(),
+                 total_amount: cartDetail?.cart?.grandTotal || 0,
+                 status: 'pending',
+                 payment_method: (cartDetail?.cart?.paymentMethod as any)?.title || cartDetail?.cart?.paymentMethod || 'Unknown',
+                 payment_status: 'pending',
+                 shipping_address: addressStr,
+                 contact_phone: phoneStr
+             }).select('id').single();
+
+             if (!orderError && orderData?.id) {
+                 const orderItemsData = cartItems.map((edge: any) => {
+                     const item = edge.node;
+                     const productId = item?.product?.id || item?.product_id || item?.productUrlKey || item?.sku;
+                     return {
+                         order_id: orderData.id,
+                         product_id: productId?.toString() || "0",
+                         product_name: item?.name || "Product",
+                         quantity: item?.quantity || 1,
+                         unit_price: item?.price || 0,
+                         total_price: (item?.price || 0) * (item?.quantity || 1),
+                         selected_color: cartDetail.itemColors ? (cartDetail.itemColors[item?.product?.id] || cartDetail.itemColors[item?.product_id] || cartDetail.itemColors[productId]) : null
+                     };
+                 });
+                 if (orderItemsData.length > 0) {
+                     await supabase.from('order_items').insert(orderItemsData);
+                 }
+             }
+          } catch (e) {
+             console.error("Failed to sync order to Supabase", e);
+          }
+
           showToast("Order placed successfully!", "success");
           setCookie(ORDER_ID, responseData?.orderId);
           dispatch(clearCart());

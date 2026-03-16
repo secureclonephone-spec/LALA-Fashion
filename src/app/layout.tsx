@@ -1,4 +1,4 @@
-import { Outfit } from "next/font/google";
+﻿import { Outfit, Geist } from "next/font/google";
 import "./globals.css";
 import { GlobalProviders } from "@/providers";
 import { generateMetadataForPage } from "@utils/helper";
@@ -6,6 +6,9 @@ import { staticSeo } from "@utils/metadata";
 import { SpeculationRules } from "@components/theme/SpeculationRules";
 import { ErrorBoundary } from "@/components/error/ErrorBoundary";
 import clsx from "clsx";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 export const outfit = Outfit({
   subsets: ["latin", "latin-ext"],
@@ -16,7 +19,14 @@ export const outfit = Outfit({
 });
 
 export async function generateMetadata() {
-  return generateMetadataForPage("", staticSeo.default);
+  return {
+    ...(await generateMetadataForPage("", staticSeo.default)),
+    icons: {
+      icon: [{ url: "/Favicon.png", type: "image/png" }],
+      shortcut: "/Favicon.png",
+      apple: "/Favicon.png",
+    },
+  };
 }
 
 export default function RootLayout({
@@ -25,13 +35,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <head>
       </head>
-      <body className={clsx(
-        "min-h-screen font-outfit text-foreground bg-background antialiased",
-        outfit.variable
-      )}>
+      <body
+        suppressHydrationWarning
+        className={clsx(
+          "min-h-screen font-outfit text-foreground bg-background antialiased",
+          outfit.variable
+        )}>
         <main>
           <ErrorBoundary>
             <GlobalProviders>

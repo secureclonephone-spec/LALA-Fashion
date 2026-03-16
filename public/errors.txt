@@ -1,0 +1,184 @@
+error1:
+## Error Type
+Console ApolloError
+
+## Error Message
+Failed to parse URL from /api/graphql
+
+
+    at Array.forEach (<anonymous>:1:22)
+    at resolveErrorDev (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:1882:106)
+    at getOutlinedModel (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:1434:28)
+    at parseModelString (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:1548:50)
+    at Object.<anonymous> (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2475:51)
+    at JSON.parse (<anonymous>:null:null)
+    at initializeModelChunk (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:1053:30)
+    at getOutlinedModel (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:1372:17)
+    at parseModelString (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:1602:50)
+    at Array.<anonymous> (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2475:51)
+    at JSON.parse (<anonymous>:null:null)
+    at initializeModelChunk (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:1053:30)
+    at resolveConsoleEntry (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2008:96)
+    at processFullStringRow (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2409:17)
+    at processFullBinaryRow (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2349:9)
+    at processBinaryChunk (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2459:98)
+    at progress (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2628:13)
+    at RootLayout (src\app\(public)\layout.tsx:16:7)
+
+## Code Frame
+  14 |         {children}
+  15 |       </div>
+> 16 |       <Footer />
+     |       ^
+  17 |     </main>
+  18 |   );
+  19 | }
+
+Next.js version: 16.0.10 (Turbopack)
+
+
+Error2:
+## Error Type
+Console Error
+
+## Error Message
+G:\My websites\naveed\nextjs-commerce\.next\dev\server\chunks\ssr\node_modules_@apollo_client_d12e243a._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+
+
+    at createConsoleError (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_7a8122d0._.js:2189:71)
+    at handleConsoleError (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_7a8122d0._.js:2970:54)
+    at console.error (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_7a8122d0._.js:3114:57)
+    at getThemeCustomization (src\utils\bagisto\index.ts:359:13)
+    at Footer (src\components\layout\footer\index.tsx:20:16)
+    at Object.react_stack_bottom_frame (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2714:30)
+    at resolveConsoleEntry (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2008:170)
+    at processFullStringRow (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2409:17)
+    at processFullBinaryRow (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2349:9)
+    at processBinaryChunk (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2459:98)
+    at progress (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2628:13)
+    at RootLayout (src\app\(public)\layout.tsx:16:7)
+
+## Code Frame
+  357 |     };
+  358 |   } catch (err) {
+> 359 |     console.error("ThemeCustomization Error:", err);
+      |             ^
+  360 |   }
+  361 |
+  362 |   return {
+
+Next.js version: 16.0.10 (Turbopack)
+
+
+Error3:
+## Error Type
+Console Error
+
+## Error Message
+G:\My websites\naveed\nextjs-commerce\.next\dev\server\chunks\ssr\node_modules_5da98906._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+
+
+    at createConsoleError (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_7a8122d0._.js:2189:71)
+    at handleConsoleError (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_7a8122d0._.js:2970:54)
+    at console.error (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_7a8122d0._.js:3114:57)
+    at getThemeCustomization (src\utils\bagisto\index.ts:359:13)
+    at Footer (src\components\layout\footer\index.tsx:20:16)
+    at Object.react_stack_bottom_frame (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2714:30)
+    at resolveConsoleEntry (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2008:170)
+    at processFullStringRow (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2409:17)
+    at processFullBinaryRow (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2349:9)
+    at processBinaryChunk (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2459:98)
+    at progress (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2628:13)
+    at RootLayout (src\app\(public)\layout.tsx:16:7)
+
+## Code Frame
+  357 |     };
+  358 |   } catch (err) {
+> 359 |     console.error("ThemeCustomization Error:", err);
+      |             ^
+  360 |   }
+  361 |
+  362 |   return {
+
+Next.js version: 16.0.10 (Turbopack)
+
+
+Error4:
+## Error Type
+Console Error
+
+## Error Message
+G:\My websites\naveed\nextjs-commerce\.next\dev\server\chunks\ssr\node_modules_next_072325cb._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+
+
+    at createConsoleError (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_7a8122d0._.js:2189:71)
+    at handleConsoleError (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_7a8122d0._.js:2970:54)
+    at console.error (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_7a8122d0._.js:3114:57)
+    at getThemeCustomization (src\utils\bagisto\index.ts:359:13)
+    at Footer (src\components\layout\footer\index.tsx:20:16)
+    at Object.react_stack_bottom_frame (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2714:30)
+    at resolveConsoleEntry (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2008:170)
+    at processFullStringRow (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2409:17)
+    at processFullBinaryRow (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2349:9)
+    at processBinaryChunk (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2459:98)
+    at progress (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2628:13)
+    at RootLayout (src\app\(public)\layout.tsx:16:7)
+
+## Code Frame
+  357 |     };
+  358 |   } catch (err) {
+> 359 |     console.error("ThemeCustomization Error:", err);
+      |             ^
+  360 |   }
+  361 |
+  362 |   return {
+
+Next.js version: 16.0.10 (Turbopack)
+
+
+Error5:
+## Error Type
+Console ApolloError
+
+## Error Message
+Failed to parse URL from /api/graphql
+
+
+    at Array.forEach (<anonymous>:1:22)
+    at resolveErrorDev (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:1882:148)
+    at processFullStringRow (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2390:29)
+    at processFullBinaryRow (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2349:9)
+    at processBinaryChunk (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2459:98)
+    at progress (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2628:13)
+    at NavbarErrorBoundary (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/src_42f49b09._.js:1497:214)
+    at Navbar (src\components\layout\navbar\index.tsx:14:5)
+    at RootLayout (src\app\(public)\layout.tsx:12:7)
+
+## Code Frame
+  12 | export default function Navbar() {
+  13 |   return (
+> 14 |     <NavbarErrorBoundary>
+     |     ^
+  15 |       <header className="sticky top-0 z-10">
+  16 |         <nav className="relative flex flex-col items-center justify-between gap-4 bg-neutral-50 p-4 dark:bg-neutral-900 md:flex-row lg:px-6 lg:py-4">
+  17 |           <div className="flex w-full items-center justify-between gap-0 sm:gap-4">
+
+Next.js version: 16.0.10 (Turbopack)
+
+
+Error6:
+## Error Type
+Runtime ApolloError
+
+## Error Message
+Failed to parse URL from /api/graphql
+
+
+    at Array.forEach (<anonymous>:1:22)
+    at resolveErrorDev (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:1882:148)
+    at processFullStringRow (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2390:29)
+    at processFullBinaryRow (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2349:9)
+    at processBinaryChunk (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2459:98)
+    at progress (file://G:/My websites/naveed/nextjs-commerce/.next/dev/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js:2628:13)
+
+Next.js version: 16.0.10 (Turbopack)

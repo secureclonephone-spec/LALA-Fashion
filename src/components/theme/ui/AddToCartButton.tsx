@@ -12,20 +12,28 @@ export default function AddToCartButton({
   productType,
   productUrlKey,
   productId,
-  isSaleable
+  isSaleable,
+  fallbackStockStatus
 }: {
   productType?: string;
   productId: string;
   productUrlKey: string;
   isSaleable?: string;
+  fallbackStockStatus?: boolean;
 }) {
+  const checkIsSaleable = () => {
+    if (fallbackStockStatus === true) return "1";
+    if (isSaleable) return isSaleable;
+    return "";
+  };
+  const actualSaleable = checkIsSaleable();
   const { isCartLoading, onAddToCart } = useAddProduct();
   const { showToast } = useCustomToast();
   const { user } = useAppSelector((state) => state.user);
   const session = { user };
 
   const handleAddToCart = () => {
-    if (!isSaleable || isSaleable === "") {
+    if (!actualSaleable || actualSaleable === "") {
       showToast("This product is out of stock", "warning");
       return;
     }
@@ -57,11 +65,11 @@ export default function AddToCartButton({
     </Link>
   ) : (
     <button
-      aria-disabled={isCartLoading || !isSaleable || isSaleable === ""}
+      aria-disabled={isCartLoading || !actualSaleable || actualSaleable === ""}
       aria-label={productUrlKey}
       className={clsx(buttonClasses, {
-        "hover:opacity-90": isSaleable && isSaleable !== "",
-        [disabledClasses]: isCartLoading || !isSaleable || isSaleable === "",
+        "hover:opacity-90": actualSaleable && actualSaleable !== "",
+        [disabledClasses]: isCartLoading || !actualSaleable || actualSaleable === "",
       })}
       type="button"
       onClick={handleAddToCart}

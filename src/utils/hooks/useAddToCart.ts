@@ -1,13 +1,12 @@
 import { useCustomToast } from "./useToast";
 import { useAppDispatch } from "@/store/hooks";
-import { addItem, clearCart } from "@/store/slices/cart-slice";
+import { addItem, clearCart, setItemColor } from "@/store/slices/cart-slice";
 import { isObject } from "@utils/type-guards";
 import { getCartToken, getCookie } from "@utils/getCartToken";
 import { useGuestCartToken } from "./useGuestCartToken";
 import { IS_GUEST } from "@/utils/constants";
 import { useMutation } from "@apollo/client";
 import {
-  CREATE_ADD_PRODUCT_IN_CART,
   REMOVE_CART_ITEM,
   UPDATE_CART_ITEM,
 } from "@/graphql";
@@ -19,58 +18,93 @@ export const useAddProduct = () => {
   const dispatch = useAppDispatch();
   const { createGuestToken, resetGuestToken } = useGuestCartToken();
   const { showToast } = useCustomToast();
-
-  const [mutateAsync, { loading: isCartLoading }] = useMutation(
-    CREATE_ADD_PRODUCT_IN_CART,
-    {
-      onCompleted: (res) => {
-        const responseData = res?.createAddProductInCart?.addProductInCart;
-
-        if (!responseData?.success) {
-          showToast(responseData?.message || "Error adding to cart", "danger");
-          return;
-        }
-        if (responseData) {
-          if (responseData.success) {
-            dispatch(addItem(responseData as any));
-            showToast("Product added to cart successfully", "success");
-          }
-        }
-      },
-
-      onError: (err) => {
-        showToast(err?.message ?? "Error", "danger");
-      },
-    },
-  );
+  const isCartLoading = false;
 
   const onAddToCart = async ({
     productId,
     quantity,
+    selectedColor,
   }: {
     productId: string;
     quantity: number;
     token?: string;
     cartId?: number | string;
+    selectedColor?: string;
   }) => {
-    // Ensure token exists - create if needed
+    // Generate a local session token if needed
     let token = getCartToken();
-
     if (!token) {
-      token = await createGuestToken();
-
-      if (!token) {
-        showToast("Failed to create cart session", "danger");
-        return;
+      try {
+        token = await createGuestToken();
+      } catch (e) {
+        token = `local_cart_${Date.now()}`;
       }
     }
 
-    await mutateAsync({
-      variables: {
-        productId: parseInt(productId),
-        quantity,
+    if (selectedColor) {
+      dispatch(setItemColor({ productId: productId.toString(), color: selectedColor }));
+    }
+
+    // Fetch product details from Supabase to build proper cart shape
+    let productName = "Product";
+    let productPrice = 0;
+    let productImage = "";
+    let productSku = "";
+    let productSlug = productId;
+
+    try {
+      const res = await fetch(`/api/product-details?id=${productId}`);
+      if (res.ok) {
+        const { product } = await res.json();
+        if (product) {
+          productName = product.name || "Product";
+          productPrice = product.sale_price || product.mrp || 0;
+          productImage = product.image_url || "";
+          productSku = product.sku || productId;
+          productSlug = product.slug || productId;
+        }
+      }
+    } catch (e) {
+      console.error("Error fetching product details for cart:", e);
+    }
+
+    const subtotal = productPrice * quantity;
+
+    const cartItem = {
+      id: Date.now(),
+      itemsQty: quantity,
+      subtotal: subtotal,
+      grandTotal: subtotal,
+      taxAmount: 0,
+      shippingAmount: 0,
+      paymentMethod: "",
+      paymentMethodTitle: "",
+      shippingMethod: "",
+      selectedShippingRate: "",
+      selectedShippingRateTitle: "",
+      items: {
+        edges: [
+          {
+            node: {
+              id: productId,
+              name: productName,
+              sku: productSku,
+              productUrlKey: productSlug,
+              quantity: quantity,
+              price: productPrice,
+              baseImage: JSON.stringify({ small_image_url: productImage }),
+              product: { id: productId },
+              product_id: productId,
+            },
+          },
+        ],
       },
-    });
+    };
+
+    dispatch(addItem(cartItem as any));
+    showToast("Product added to cart successfully", "success");
+
+    return true;
   };
 
   //--------Remove Cart Product Quantity--------//

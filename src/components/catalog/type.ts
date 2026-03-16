@@ -12,6 +12,8 @@ export interface ProductSectionNode {
   baseImageUrl?: string;
   price?: string | number;
   specialPrice?: string;
+  rating?: number;
+  reviewCount?: number;
   images?: {
     edges: Array<{
       node: {
@@ -72,6 +74,9 @@ export interface ProductNode {
   upSells?: {
     edges: Array<{ node: ProductSectionNode }>;
   };
+  orderCount?: number;
+  quickAttributes?: Array<{ label: string; value: string; highlight?: boolean }>;
+  colors?: { name: string; hex: string }[];
 }
 
 export interface ProductsResponse {
@@ -97,6 +102,8 @@ export interface ProductSectionNode {
   minimumPrice?: string | number;
   price?: string | number;
   specialPrice?: string;
+  rating?: number;
+  reviewCount?: number;
   images?: {
     edges: Array<{
       node: {
@@ -149,6 +156,7 @@ export interface ProductReviewNode {
 }
 
 export interface ProductData {
+  colors?: { name: string; hex: string }[];
   urlKey: string;
   variants?: {
     edges?: {
@@ -190,6 +198,9 @@ export interface ProductData {
     attributes?: unknown[];
     index?: unknown[];
   } | null;
+  orderCount?: number;
+  quickAttributes?: Array<{ label: string; value: string; highlight?: boolean }>;
+  stock_status?: string;
 }
 
 export interface AttributeType {

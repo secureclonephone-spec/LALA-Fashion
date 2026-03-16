@@ -1,8 +1,9 @@
 "use client";
 
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { useEffect } from "react";
 import clsx from "clsx";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
 import { ConfigurableProductIndexData } from "@/types/types";
 import { useAddProduct } from "@utils/hooks/useAddToCart";
@@ -28,7 +29,7 @@ function SubmitButton({
   isSaleable: string;
 }) {
   const buttonClasses =
-    "relative flex w-full max-w-[16rem] cursor-pointer h-fit items-center justify-center rounded-full bg-blue-600 p-4 tracking-wide text-white";
+    "relative flex flex-1 w-full cursor-pointer h-fit items-center justify-center rounded-full bg-blue-600 p-4 tracking-wide text-white";
   const disabledClasses = "cursor-wait opacity-60";
 
   if (!isSaleable || isSaleable === "") {
@@ -54,7 +55,7 @@ function SubmitButton({
         disabled={!selectedVariantId}
         className={clsx(buttonClasses, " opacity-60 !cursor-not-allowed")}
       >
-        Add To Cart
+        Buy Now
       </button>
     );
   }
@@ -62,7 +63,7 @@ function SubmitButton({
   return (
     <button
       aria-disabled={pending}
-      aria-label="Add to cart"
+      aria-label="Buy Now"
       type="submit"
       className={clsx(buttonClasses, {
         "hover:opacity-90": true,
@@ -75,7 +76,7 @@ function SubmitButton({
       <div className="absolute left-0 ml-4">
         {pending ? <LoadingDots className="mb-3 bg-white" /> : ""}
       </div>
-      Add To Cart
+      Buy Now
     </button>
   );
 }
@@ -85,14 +86,28 @@ export function AddToCart({
   index,
   productId,
   userInteracted,
+  selectedColors,
+  onQuantityChange,
+  fallbackStockStatus,
 }: {
   productSwatchReview: ProductSwatchReview;
   productId: string;
   index: ConfigurableProductIndexData[];
   userInteracted: boolean;
+  selectedColors?: { name: string; hex: string }[];
+  onQuantityChange?: (qty: number) => void;
+  fallbackStockStatus?: boolean;
 }) {
-  const isSaleable = productSwatchReview?.isSaleable || "";
+  const checkIsSaleable = () => {
+    if (fallbackStockStatus === true) return "1"; // "1" maps to true-like in boolean casts
+    if (productSwatchReview?.isSaleable) return productSwatchReview.isSaleable;
+    // @ts-ignore
+    if (productSwatchReview?.stock_status === "IN_STOCK" || productSwatchReview?.stock_status === "ACTIVE") return "1";
+    return "";
+  };
+  const isSaleable = checkIsSaleable();
   const { onAddToCart, isCartLoading } = useAddProduct();
+  const router = useRouter();
   const { handleSubmit, setValue, control, register } = useForm<AddToCartFormData>({
     defaultValues: {
       quantity: 1,
@@ -104,6 +119,12 @@ export function AddToCart({
     control,
     name: "quantity",
   });
+
+  useEffect(() => {
+    if (onQuantityChange) {
+      onQuantityChange(Number(quantity) || 1);
+    }
+  }, [quantity, onQuantityChange]);
 
   const increment = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -123,8 +144,8 @@ export function AddToCart({
   const superAttributes = productSwatchReview?.superAttributeOptions
     ? safeParse(productSwatchReview.superAttributeOptions)
     : productSwatchReview?.superAttributes?.edges?.map(
-        (e) => e.node,
-      ) || [];
+      (e) => e.node,
+    ) || [];
 
   const isConfigurable = superAttributes.length > 0;
 
@@ -141,10 +162,15 @@ export function AddToCart({
       type === "configurable"
         ? String(selectedVariantId)
         : (String(productId).split("/").pop() ?? "");
-    onAddToCart({
+    const success = await onAddToCart({
       productId: pid,
       quantity: data.quantity,
+      selectedColor: selectedColors?.map(c => c.name).join(', ') || undefined,
     });
+
+    if (success) {
+      router.push("/checkout");
+    }
   };
 
   return (
@@ -154,13 +180,13 @@ export function AddToCart({
           <h1>NO STOCK AVAILABLE</h1>
         </div>
       )}
-      <form className="flex gap-x-4" onSubmit={handleSubmit(actionWithVariant)}>
-        <div className="flex items-center justify-center">
+      <form className="flex gap-x-3 sm:gap-x-4 flex-1 w-full min-w-[240px] sm:min-w-0" onSubmit={handleSubmit(actionWithVariant)}>
+        <div className="flex items-center justify-center shrink-0">
           <div className="flex items-center rounded-full border-2 border-blue-500">
             <div
               aria-label="Decrease quantity"
               role="button"
-              className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-l-full text-gray-600 transition-colors hover:text-gray-800 dark:text-white hover:dark:text-white/[80%]"
+              className="flex h-10 w-10 sm:h-12 sm:w-12 cursor-pointer items-center justify-center rounded-l-full text-gray-600 transition-colors hover:text-gray-800 dark:text-white hover:dark:text-white/[80%]"
               onClick={decrement}
             >
               <MinusIcon className="h-4 w-4" />
@@ -171,14 +197,14 @@ export function AddToCart({
               {...register("quantity", { valueAsNumber: true })}
             />
 
-            <div className="flex h-12 min-w-[4rem] items-center justify-center px-2 font-medium text-gray-800 dark:text-white">
+            <div className="flex h-10 sm:h-12 min-w-[3rem] sm:min-w-[4rem] items-center justify-center px-2 font-medium text-gray-800 dark:text-white">
               {quantity}
             </div>
 
             <div
               aria-label="Increase quantity"
               role="button"
-              className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-r-full text-gray-600 transition-colors hover:text-gray-800 dark:text-white hover:dark:text-white/[80%]"
+              className="flex h-10 w-10 sm:h-12 sm:w-12 cursor-pointer items-center justify-center rounded-r-full text-gray-600 transition-colors hover:text-gray-800 dark:text-white hover:dark:text-white/[80%]"
               onClick={increment}
             >
               <PlusIcon className="h-4 w-4" />

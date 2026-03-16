@@ -1,0 +1,81 @@
+You are building a modern headless eCommerce project using Next.js.
+
+PROJECT CONTEXT
+I am developing a high-performance headless commerce website.
+The architecture must use Supabase as the backend platform and Cloudflare R2 as the object storage system.
+
+TECH STACK (STRICT)
+Frontend
+
+* Next.js (App Router)
+* React
+* TypeScript
+* Tailwind CSS
+
+Backend
+
+* Supabase (PostgreSQL database, authentication, API)
+
+Storage
+
+* Cloudflare R2 (product images, media, uploads)
+
+IMPORTANT CONFIGURATION FILES
+
+Supabase configuration file:
+G:\My websites\naveed\nextjs-commerce\public\Supabase.txt
+
+Cloudflare R2 configuration file:
+G:\My websites\naveed\nextjs-commerce\public\R2.txt
+
+These files contain the necessary configuration details.
+You must read these files and use the values to configure the project.
+
+RULES
+
+1. Do NOT use Redis or Upstash.
+2. Do NOT integrate Stripe or any payment provider.
+3. Do NOT use Resend or external email services.
+4. Use Supabase for authentication, database, and APIs.
+5. Use Cloudflare R2 strictly for file and image storage.
+6. Follow clean architecture and production-ready code standards.
+
+TASKS
+
+1. Read Supabase.txt and configure the Supabase client.
+
+2. Read R2.txt and configure the Cloudflare R2 S3 client.
+
+3. Connect Next.js with Supabase for database and authentication.
+
+4. Implement tables and queries for:
+
+   * users
+   * products
+   * categories
+   * cart
+   * orders
+   * order_items
+
+5. Implement image upload functionality:
+
+   * upload product images to Cloudflare R2
+   * generate public URLs for images
+   * store image URLs inside the Supabase database
+
+6. Build a clean scalable project structure including:
+
+   * /lib (supabase + r2 clients)
+   * /app/api (server routes)
+   * /components
+   * /types
+
+7. Ensure the project is optimized for performance and scalable production usage.
+
+GOAL
+
+Create a complete modern headless commerce architecture using:
+
+Next.js + Supabase + Cloudflare R2
+
+The system must support product management, image uploads, and database integration while keeping the code clean, scalable, and production-ready.

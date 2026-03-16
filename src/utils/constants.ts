@@ -28,7 +28,18 @@ export const CHECKOUT = {
 };
 export const HIDDEN_PRODUCT_TAG = "nextjs-frontend-hidden";
 export const DEFAULT_OPTION = "Default Title";
-export const BAGISTO_GRAPHQL_API_ENDPOINT = "/api/graphql";
+const getBaseUrl = () => {
+  if (typeof window !== "undefined") return ""; // Browser should use relative path
+  if (process.env.NEXT_PUBLIC_APP_URL) return process.env.NEXT_PUBLIC_APP_URL;
+  return "http://localhost:3000";
+};
+
+export const BAGISTO_GRAPHQL_API_ENDPOINT = `${getBaseUrl()}/api/graphql`;
+
+/** Global currency setting */
+export const CURRENCY_CODE = "PKR";
+export const CURRENCY_SYMBOL = "Rs";
+
 
 /**
  * productJsonLd constant
@@ -40,15 +51,15 @@ export const PRODUCT_OFFER_TYPE = "AggregateOffer";
 /**
  * cookies constant
  */
-export const BAGISTO_SESSION = process.env.BAGISTO_SESSION ?? "bagisto_session";
+export const BAGISTO_SESSION = "bagisto_session";
 export const TOKEN = "token";
-export const BASE_URL = process.env.NEXT_PUBLIC_NEXT_AUTH_URL;
-export const baseUrl = process.env.NEXT_PUBLIC_BAGISTO_ENDPOINT;
-export const GRAPHQL_URL = `${(process.env.NEXT_PUBLIC_BAGISTO_ENDPOINT || '').replace(/\/$/, '')}${BAGISTO_GRAPHQL_API_ENDPOINT}`;
-export const NEXT_AUTH_SECRET = process.env.NEXT_PUBLIC_NEXT_AUTH_SECRET;
+export const BASE_URL = "http://localhost:3000";
+export const baseUrl = "http://localhost:8000";
+export const GRAPHQL_URL = `${getBaseUrl()}/api/graphql`;
+export const NEXT_AUTH_SECRET = "dummy_secret";
 
 // Server-only: Use non-public env var, fallback to public for backwards compatibility
-export const STOREFRONT_KEY = process.env.BAGISTO_STOREFRONT_KEY || process.env.NEXT_PUBLIC_BAGISTO_STOREFRONT_KEY || "";
+export const STOREFRONT_KEY = "dummy_key";
 
 export const OPERATION_TO_ROUTE_MAP: Record<string, string> = {
 };
@@ -180,11 +191,11 @@ export const imageProtocol = (process.env.NEXT_SERVER_MAGENTO_PROTOCOL ||
 export function getImageUrl(url?: string, baseUrl?: string, fallback?: string) {
   if (!url) return fallback;
 
-  if (url.startsWith("http://") || url.startsWith("https://")) {
+  if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("/")) {
     return url;
   }
 
-  return `${baseUrl}${url.startsWith("/") ? url : `/${url}`}`;
+  return `${baseUrl}/${url}`;
 }
 
 

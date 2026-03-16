@@ -1,0 +1,98 @@
+Design a world-class, ultra-professional eCommerce **Admin Dashboard** UI (desktop first 1440px, then responsive mobile 375px), ultra HD, modern luxury aesthetic. Produce high-fidelity screens, component library, and Figma-ready assets + Tailwind CSS utility suggestions. Focus on clarity, speed, and admin productivity. Use a clean grid, generous spacing, 2xl rounded cards, subtle soft shadows, bold readable typography (Inter / Poppins), and a sophisticated color palette (deep charcoal #0F1724, accent gold #D4AF37 or teal #14B8A6, neutrals #F8FAFC/#E6EEF3). Include dark & light mode toggle and accessible contrast.
+
+Overall layout:
+- Left vertical sticky sidebar (icons + labels) with sections: Dashboard, Products, Categories, Orders, Users, Approve, Coupons, Activity, Contact, Newsletter, Banners, Settings.
+- Top sticky header with site search (global), notification bell (with dropdown), quick actions (Add Product, Export CSV), user avatar dropdown, theme toggle.
+- Right contextual drawer for quick edit / preview (slides from right).
+- Responsive behavior: sidebar collapses to icons on tablet; off-canvas menu on mobile.
+
+Global micro-interactions:
+- Smooth 150–250ms easing for hover & focus, 300–500ms for opening drawers/modals.
+- Row hover elevation, inline editable fields, confirm modals for destructive actions.
+- Loading skeletons for tables and charts.
+
+1) DASHBOARD screen (main KPIs & charts)
+- KPI cards (top row): Total Revenue (Rs) with percent change vs last period (sparkline), Daily Sales (line sparkline), Total Users, Total Orders, Avg. Order Value (Rs). Show exact values + currency prefix "Rs".
+- Live Sales Overview: realtime feed card showing last 10 sales (time, order id, customer, amount, payment method, status badge).
+- Revenue Chart: combined area + bar (daily revenue vs orders) with tooltips, date range picker (Today / 7D / 30D / Custom).
+- Recent Orders table (compact): columns — Order ID (clickable link to order), Customer (avatar + name), Items (count), Total (Rs), Payment (method + status icon), Status (badge: Pending / Processing / Shipped / Delivered / Cancelled), Date, Actions (View / Ship / Refund).
+- User Activity feed: timeline with events (login, order placed, review left, coupon used). Filter by activity type and time.
+
+2) TAB: PRODUCTS — Products Management
+- Toolbar: Download (CSV), Export CSV, Search bar (global search by name, SKU), Filters (category, stock status, rating, price range), Add Product button (prominent).
+- Product grid or table view toggle.
+- Add / Edit Product modal (or full page):
+  Fields: Product Name, SKU, Sale Price (Rs), MRP (Rs), Category (dropdown), Sub Category (dropdown auto-populate), Stock Status (In Stock / Out of Stock / Backorder), Quantity (number), Description (rich text / markdown), Made in (country), Design (text), Delivery (text), Rating (admin can add custom rating).
+  — Custom Review block: Reviewer Name, Rating (1-5 stars, interactive), Review Date (date picker), Reviewer Image (upload avatar), Review Text, Save Review.
+- Product table columns: Product (image + name), Category, Price (Sale / MRP), Stock (qty + status), Ratings (avg stars & count), Actions (Edit, View, Delete). Use compact pill buttons for actions; destructive delete opens confirmation.
+- Bulk actions: select multiple → Change Category, Export Selected, Update Stock, Delete.
+
+3) TAB: CATEGORIES — Categories Management
+- Add New Category modal: Category Name, Parent Category (optional), Upload Icon/Image, Description.
+- Show categories list/tree with counts: Category Name, Sub Categories count, # Products in category (badge). Action: Edit, View Products, Delete (with cascade warning).
+- Search & filter; sort by name / products count.
+
+4) TAB: ORDERS — Orders Management
+- Filter tabs: All / Pending / Processing / Shipped / Delivered / Cancelled.
+- Search bar (order id, customer, phone).
+- Table columns: Order ID (link), Customer (avatar + name + phone tooltip), Items (list tooltip or count), Total (Rs), Payment (method + success/fail indicator), Status (colored badge), Date (relative + exact on hover), Actions (View / Invoice / Track / Refund).
+- Order detail slide-out: shipping address, items list (image, qty, price), customer notes, timeline (status changes with timestamps), fulfillment actions (mark shipped + carrier + tracking code), print invoice, export PDF.
+
+5) TAB: USERS — Users Management
+- Subtabs/filters: All / Customers / Sellers / Banned.
+- Search by name / email / phone.
+- Table columns: User (avatar + name + email), Role, Orders (count, click to list), Total Spent (Rs), Joined (date), Status (Active / Banned), Actions (View, Edit, Ban/Unban, Delete).
+- User profile drawer: full profile, order history, wallet/balance, messages, IP/location, activity log, impersonate (admin ability to view as user, button behind confirmation).
+
+6) TAB: COUPONS — Coupons Management
+- Add Coupon modal: Code (auto-generate or custom), Description, Discount type (Percentage / Fixed), Discount value, Applies to (All / Categories / Products), Minimum Order (Rs), Usage limit, Coupon Expiry Date, For New User (toggle), For Member (toggle / member tiers), Active toggle, Save.
+- Coupons list: Code, Description, Discount, Expires At (date), Status (Active/Expired), New User (yes/no), For Member, Actions (Edit / Delete / Duplicate).
+- Bulk enable/disable, export usage report CSV.
+
+7) TAB: ACTIVITY — Activity Log
+- Search + filter by types: all / order / store / user / product / coupon / settings.
+- Log table: Time, Actor (admin or system), Action, Target (order #, product SKU), IP, Details expandable.
+- Retention controls: export, clear older than X days (with confirmation).
+
+8) TAB: NEWSLETTER — Newsletter & Subscribers
+- KPI: Total Subscribers, Joined Today, Joined This Month.
+- Search & filters.
+- Table: Email Address, Subscribed On (date/time), Status (confirmed/unconfirmed), Actions (delete, view history).
+- Quick compose CTA: send broadcast (modal with subject, content WYSIWYG, recipient filter by segment), scheduled send option.
+
+9) TAB: BANNERS — Announcement Banners
+- Templates list: Discount Offer, Warning / Alert, New Products, Changelog, Shipping Notice, Site Maintenance.
+- Create Custom Banner modal: Message (text), Button Label, Button Action (Dismiss / Copy Coupon Code / Custom Link), Background Gradient (preset gradients + color picker), Text Color, Start Immediately toggle, Schedule start/end, Activate toggle, Save, Reset.
+- Saved banners list: preview thumbnail, active toggle, edit, delete, reorder (drag to change priority).
+
+10) TAB: SETTINGS — Settings & Configuration
+- Sections: General, Payment, Shipping, Admin, Security, Notifications, Theme.
+- General: Store Name, Tagline, Support Email, Support Phone, Timezone (dropdown), Currency (Rs + USD toggles with currency format examples), Language.
+- Payment config: Cash on Delivery toggle + settings (Allow COD orders toggle), Easypaisa, JazzCash, card gateway placeholders, test mode toggle, webhook setup UI.
+- Shipping: International Shipping toggle, Free Shipping Minimum (Rs), Standard Rate (Rs), Express Rate (Rs), Shipping zones table.
+- Admin Profile: Admin Name, Admin Photo (upload), Full Name, Email, Change Password fields.
+- Security: Two-Factor Authentication toggle (Require 2FA for admin logins on/off), Login Alerts toggle (email alerts on new device), Session Timeout (minutes numeric), IP Whitelist (comma separated), Discard / Save Changes buttons.
+- Notifications: notification icon controls, email templates editor (HTML/WYSIWYG).
+- Appearance: Light/Dark mode, Primary accent color picker, Sticky header on/off.
+
+Accessibility & Content:
+- All form fields must have labels, helper text, and accessible error states. Use keyboard navigable tables and aria attributes.
+- Provide clear microcopy for destructive actions and confirmation flows.
+
+Data export & admin tooling:
+- CSV/Excel export for products, orders, users, coupons, activity, with column mapping modal.
+- Audit log, role-based access control (RBAC) with permissions UI (create roles: Super Admin, Manager, Support, Editor).
+- Search: global fuzzy search with keyboard shortcut ("/" to focus).
+
+Deliverables requested from generator:
+- High-fidelity desktop and mobile mockups.
+- Component library (buttons, inputs, selects, modals, badges, status colors).
+- Exports: Figma file link (or .fig), assets (SVG icons, PNGs), Tailwind CSS tokens/classes suggestion, and basic HTML/CSS snippets for the top header and KPI cards.
+
+Tone & styling instruction for visuals:
+- Modern minimal luxury; avoid clutter; prioritize data legibility.
+- Use color only for meaning (status badges, accent CTA).
+- Provide two visual themes: Premium (dark with gold accents) and Clean (light with teal accents).
+
+Final note for the AI designer:
+Render crisp pixel-perfect screens, include tooltips and edge cases (empty states, no results, server error states), and a short interaction prototype for: Add Product → Save → Live Sales feed update, and marking an order as Shipped (with tracking). Output a short delivery README that lists components and how to import into Figma + Tailwind tokens.

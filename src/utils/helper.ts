@@ -342,7 +342,8 @@ export function safeCurrencyCode(product: ProductData): string {
     return product.price.currencyCode;
   }
 
-  return "USD";
+  return "PKR";
+
 }
 
 /**

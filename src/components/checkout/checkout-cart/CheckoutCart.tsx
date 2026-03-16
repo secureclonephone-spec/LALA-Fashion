@@ -4,12 +4,14 @@ import { Price } from "@components/theme/ui/Price";
 import CartItemAccordion from "./CartItemAccordian";
 import { NOT_IMAGE } from "@utils/constants";
 import Link from "next/link";
+import { useAppSelector } from "@/store/hooks";
 import { createUrl, safeParse } from "@utils/helper";
 type MerchandiseSearchParams = {
   [key: string]: string;
 };
 
 export default function CheckoutCart({ cartItems, selectedShippingRate: _id }: { cartItems: any, selectedShippingRate?: any }) {
+  const cartDetail = useAppSelector((state) => state.cartDetail);
 
   const cart = Array.isArray(cartItems?.items?.edges)
     ? cartItems?.items?.edges
@@ -60,6 +62,11 @@ export default function CheckoutCart({ cartItems, selectedShippingRate: _id }: {
                               {item?.node?.sku}
                             </p>
                           ) : null}
+                          {cartDetail.itemColors && cartDetail.itemColors[item?.node?.product?.id || item?.node?.product_id] && (
+                              <p className="text-sm font-normal text-neutral-500 dark:text-neutral-400 mt-0.5">
+                                  Color: <span className="font-medium text-black dark:text-white">{cartDetail.itemColors[item?.node?.product?.id || item?.node?.product_id]}</span>
+                              </p>
+                          )}
                           <span className="font-normal text-black dark:text-white">
                             Quantity : {item?.node?.quantity}
                           </span>
@@ -67,7 +74,7 @@ export default function CheckoutCart({ cartItems, selectedShippingRate: _id }: {
                             <Price
                               amount={item?.node?.price}
                               className="space-y-2 text-start font-outfit text-lg font-medium xl:text-right"
-                              currencyCode={"USD"}
+                              currencyCode={"PKR"}
                             />
                           </div>
                         </div>
@@ -76,7 +83,7 @@ export default function CheckoutCart({ cartItems, selectedShippingRate: _id }: {
                         <Price
                           amount={item?.node?.price}
                           className="space-y-2 text-start font-outfit text-lg font-medium xl:text-right"
-                          currencyCode={"USD"}
+                          currencyCode={"PKR"}
                         />
                       </div>
                     </div>
@@ -93,7 +100,7 @@ export default function CheckoutCart({ cartItems, selectedShippingRate: _id }: {
             <Price
               amount={cartItems?.subtotal || "0"}
               className="text-right text-base text-black dark:text-white"
-              currencyCode={"USD"}
+              currencyCode={"PKR"}
             />
           </div>
           <div className="mb-3 flex items-center justify-between pb-1 pt-1">
@@ -105,7 +112,7 @@ export default function CheckoutCart({ cartItems, selectedShippingRate: _id }: {
               <Price
                 amount={cartItems?.shippingAmount}
                 className="text-right text-base text-black dark:text-white"
-                currencyCode={"USD"}
+                currencyCode={"PKR"}
               />
             ) : (
               <p className="text-right text-base">Calculated at Next Step</p>
@@ -118,7 +125,7 @@ export default function CheckoutCart({ cartItems, selectedShippingRate: _id }: {
             <Price
               amount={(cartItems as any)?.grandTotal || "0"}
               className="text-right font-outfit text-2xl font-normal text-black dark:text-white"
-              currencyCode={"USD"}
+              currencyCode={"PKR"}
             />
           </div>
         </div>
@@ -126,3 +133,4 @@ export default function CheckoutCart({ cartItems, selectedShippingRate: _id }: {
     </>
   );
 }
+

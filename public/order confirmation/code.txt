@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Order Success</title>
+<!-- Tailwind CSS V3 CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F8FAFC;
+      color: #1E293B;
+    }
+  </style>
+<style data-purpose="custom-styling">
+    /* Custom shadow for the white cards to match the screenshots */
+    .card-shadow {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+<!-- BEGIN: Order Success Popup Content (Extracted from Modal) -->
+<div class="relative bg-white w-full max-w-lg rounded-[2rem] p-8 md:p-10 card-shadow text-center">
+<!-- Success Icon -->
+<div class="w-20 h-20 bg-[#F0FDF4] rounded-full flex items-center justify-center mx-auto mb-6">
+<div class="w-12 h-12 bg-[#22C55E] rounded-full flex items-center justify-center">
+<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+</svg>
+</div>
+</div>
+<h2 class="text-2xl md:text-3xl font-bold text-[#1E293B] mb-2">Congratulations!</h2>
+<p class="text-[#64748B] font-medium mb-8">Your order has been successfully placed.</p>
+<!-- Order Brief Card -->
+<div class="bg-[#F8FAFC] border border-[#E2E8F0] rounded-2xl p-5 mb-6 text-left">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-14 h-14 bg-black rounded-xl overflow-hidden flex-shrink-0">
+<img alt="Hublot Chain Luxury Watch" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQ4_SBZ-qS2PkNjxB0Qkx7UPQu5BN1QLJ9m2FoFCpxrehpCfIZPKJwQkyJMRtN4wA6llfiOr9UliSjVShY4hVYl8chw85FOHLhA7BI4YPkU1ZnPLUPlGVG7qtnRg1Ye3cW1_6ZnYI2fx6B4zR_1DS2ypTuRnSBMb5843coJCfpZzEOOYupjx5Cr3zdpXclCqivnFDFT3C5L6qlRBaIhpbuhrCQQUBqVljVPil7lzCt06W86i_mcjSAwCk8upJbDvjA4ompfBtgvg"/>
+</div>
+<div class="min-w-0">
+<h4 class="font-bold text-[#1E293B] truncate">Hublot Chain Luxury Watch</h4>
+<p class="text-[10px] font-bold uppercase tracking-wider text-[#94A3B8]">Qty: 1</p>
+</div>
+</div>
+<div class="flex justify-between items-center pt-3 border-t border-[#E2E8F0]">
+<span class="text-sm font-semibold text-[#64748B]">Total Amount Paid</span>
+<span class="font-bold text-[#1E293B]">Rs. 876,750.00</span>
+</div>
+</div>
+<!-- Tracking ID Section -->
+<div class="mb-8">
+<p class="text-xs font-bold text-[#94A3B8] uppercase tracking-widest mb-3">Order Tracking ID</p>
+<div class="flex items-center justify-between bg-[#EFF6FF] border border-[#DBEAFE] rounded-xl px-4 py-3">
+<span class="font-mono font-bold text-[#2563EB] text-lg">#ST-99201</span>
+<button class="text-[10px] font-bold uppercase tracking-wider text-[#2563EB] hover:text-[#1D4ED8] transition-colors" onclick="navigator.clipboard.writeText('#ST-99201')">Copy ID</button>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="grid grid-cols-2 gap-4">
+<button class="bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-blue-500/20">
+        Track Order
+      </button>
+<button class="bg-[#F1F5F9] hover:bg-[#E2E8F0] text-[#475569] font-bold py-4 rounded-xl transition-all">
+        Contact
+      </button>
+</div>
+<!-- Close Link -->
+<button class="mt-6 text-sm font-semibold text-[#94A3B8] hover:text-[#64748B] transition-colors">
+      Close Window
+    </button>
+</div>
+<!-- END: Order Success Popup Content -->
+</body></html>

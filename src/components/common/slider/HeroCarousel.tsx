@@ -40,14 +40,11 @@ export default function HeroCarousel({
     "flex h-full cursor-pointer items-center justify-center px-6 transition-all ease-in-out hover:scale-110 hover:text-black dark:hover:text-white";
 
   return (
-    <>
-      <div className="group relative overflow-hidden">
+    <div className="flex flex-col h-full w-full">
+      <div className="group relative overflow-hidden aspect-square lg:aspect-auto lg:flex-1 w-full rounded-2xl">
         <div
           key={current}
-          className="group relative h-full max-h-[738px] w-full overflow-hidden rounded-2xl transition-opacity duration-600 ease-in-out"
-          style={{
-            aspectRatio: "380/316",
-          }}
+          className="absolute inset-0 transition-opacity duration-600 ease-in-out"
         >
           <div className="relative h-full w-full">
             {isLoading && (
@@ -59,9 +56,8 @@ export default function HeroCarousel({
             <Image
               fill
               alt={images[current]?.altText as string}
-              className={`h-full w-full object-cover transition duration-300 ease-in-out group-hover:scale-105 ${
-                isLoading ? "opacity-0" : "opacity-100"
-              }`}
+              className={`h-full w-full object-cover transition duration-300 ease-in-out group-hover:scale-105 ${isLoading ? "opacity-0" : "opacity-100"
+                }`}
               priority={true}
               sizes="(max-width: 1024px) 100vw, (max-width: 1536px) 66vw, 1000px"
               src={images[current]?.src as string}
@@ -95,7 +91,7 @@ export default function HeroCarousel({
       </div>
 
       {images?.length > 1 ? (
-        <ul className="fade-in my-3 flex flex-nowrap gap-2 overflow-x-auto overflow-y-hidden py-1 sm:my-7 lg:mb-0">
+        <ul className="fade-in my-3 lg:my-4 flex flex-nowrap gap-2 lg:gap-3 overflow-x-auto overflow-y-hidden py-1 lg:mb-0 scrollbar-hide">
           {images.map((image, index) => {
             const isActive = index === current;
 
@@ -130,6 +126,6 @@ export default function HeroCarousel({
           </div>
         </div>
       ) : null}
-    </>
+    </div>
   );
 }

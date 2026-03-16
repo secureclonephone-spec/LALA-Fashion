@@ -1,0 +1,12 @@
+Account ID 44d23cef2e2ff8877438565e123ea974
+S3 API https://44d23cef2e2ff8877438565e123ea974.r2.cloudflarestorage.com
+Access Key ID fe24a2f3b576d5fa2badffc11683f426
+Secret Access Key 1eedeb4313fa20f900adf6ff0ecc8b88e8374ea1137992fc4d36b8cfc0d139ac
+
+Use jurisdiction-specific endpoints for S3 clients:
+Default https://44d23cef2e2ff8877438565e123ea974.r2.cloudflarestorage.com
+Permissions:
+Allows the ability to read, write, and list objects in specific buckets.
+
+Buckets:
+naveed-commerce-images

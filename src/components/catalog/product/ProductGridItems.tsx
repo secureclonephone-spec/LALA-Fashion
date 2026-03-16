@@ -23,6 +23,8 @@ export default function ProductGridItems({
         specialPrice={product?.minimumPrice}
         product={product}
         priority={index < 4}
+        rating={product?.rating || 0}
+        reviewCount={product?.reviewCount || 0}
       />
     );
   });

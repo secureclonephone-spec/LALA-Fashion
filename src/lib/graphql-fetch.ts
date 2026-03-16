@@ -5,6 +5,7 @@ import {
   type OperationVariables,
 } from "@apollo/client";
 import makeClient from "./apollo-client";
+import { MockThemeCustomizationResponse, MockProductsResponse, MockHomeCategoriesResponse, MockProductByUrlKey, MockProductReviews } from "../utils/bagisto/mockData";
 
 
 
@@ -89,6 +90,35 @@ export async function graphqlRequest<
   variables?: TVariables,
   options?: GraphQLRequestOptions
 ): Promise<TData> {
+  const operationDef = (query as any).definitions?.find(
+    (def: any) => def.kind === 'OperationDefinition'
+  );
+  const queryName = operationDef?.name?.value;
+  if (queryName === "themeCustomization") {
+    return MockThemeCustomizationResponse as unknown as TData;
+  }
+  if (queryName === "GetProducts") {
+    return MockProductsResponse as unknown as TData;
+  }
+  if (queryName === "Categories") {
+    return MockHomeCategoriesResponse as unknown as TData;
+  }
+  // Product detail page queries — look up by urlKey from variables
+  if (queryName === "GetProductById" || queryName === "ProductSwatchReview") {
+    const urlKey = (variables as any)?.urlKey as string | undefined;
+    const product = urlKey ? MockProductByUrlKey[urlKey] ?? null : null;
+    return { product } as unknown as TData;
+  }
+  if (queryName === "GetRelatedProducts") {
+    const urlKey = (variables as any)?.urlKey as string | undefined;
+    const product = urlKey ? MockProductByUrlKey[urlKey] ?? null : null;
+    return { product } as unknown as TData;
+  }
+  if (queryName === "GetProductReviews") {
+    return MockProductReviews as unknown as TData;
+  }
+
+  return {} as TData;
   if (options?.noCache) {
     const client = makeClient();
     const result: ApolloQueryResult<TData> =
@@ -108,18 +138,18 @@ export async function graphqlRequest<
     );
   }
 
-  let queryString: string;
+  let queryString: string = "";
   const cachedQueryString = queryPrintMemo.get(query);
 
   if (cachedQueryString) {
-    queryString = cachedQueryString;
+    queryString = cachedQueryString as string;
   } else {
     queryString = print(query);
     queryPrintMemo.set(query, queryString);
   }
 
   const cacheKey = `graphql:${stableStringify({
-    query: queryString,
+    query: queryString as string,
     variables,
   })}`;
 
@@ -160,6 +190,34 @@ export async function graphqlRequestNoCache<
     "noCache" | "tags" | "life"
   >
 ): Promise<TData> {
+  const operationDef = (query as any).definitions?.find(
+    (def: any) => def.kind === 'OperationDefinition'
+  );
+  const queryName = operationDef?.name?.value;
+  if (queryName === "themeCustomization") {
+    return MockThemeCustomizationResponse as unknown as TData;
+  }
+  if (queryName === "GetProducts") {
+    return MockProductsResponse as unknown as TData;
+  }
+  if (queryName === "Categories") {
+    return MockHomeCategoriesResponse as unknown as TData;
+  }
+  if (queryName === "GetProductById" || queryName === "ProductSwatchReview") {
+    const urlKey = (variables as any)?.urlKey as string | undefined;
+    const product = urlKey ? MockProductByUrlKey[urlKey] ?? null : null;
+    return { product } as unknown as TData;
+  }
+  if (queryName === "GetRelatedProducts") {
+    const urlKey = (variables as any)?.urlKey as string | undefined;
+    const product = urlKey ? MockProductByUrlKey[urlKey] ?? null : null;
+    return { product } as unknown as TData;
+  }
+  if (queryName === "GetProductReviews") {
+    return MockProductReviews as unknown as TData;
+  }
+
+  return {} as TData;
   return graphqlRequest<TData, TVariables>(
     query,
     variables,

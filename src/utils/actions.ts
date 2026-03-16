@@ -4,11 +4,11 @@ import {
   createUserToLogin,
   logoutUser,
   recoverUserLogin,
-  subscribeUser,
 } from '@/utils/bagisto';
 import { isObject } from "@utils/type-guards";
 import { RegisterInputs } from "@components/customer/RegistrationForm";
 import { RecoverPasswordFormState } from "@components/customer/types";
+import { createClient } from "@/utils/supabase/server";
 
 export type RegisterFormState = {
   errors?: {
@@ -93,44 +93,77 @@ export async function userSubscribe(
   _prevState: RecoverPasswordFormState,
   formData: FormData
 ): Promise<RecoverPasswordFormState> {
-  const email = formData.get("email");
+  const emailRaw = formData.get("email");
+  const email = typeof emailRaw === "string" ? emailRaw.trim().toLowerCase() : "";
 
-  const data = {
-    email: typeof email === "string" ? email.trim() : "",
-  };
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return {
+      errors: {
+        email: ["Please enter a valid email address."],
+      },
+    };
+  }
 
   try {
-    const result = await subscribeUser(data) as Record<string, unknown>;
+    const supabase = await createClient();
 
-    if (result?.error) {
-      const error = result.error as Record<string, unknown>;
+    // Check if already subscribed
+    const { data: existing } = await supabase
+      .from('newsletter_subscribers')
+      .select('id, status')
+      .eq('email', email)
+      .maybeSingle();
+
+    if (existing) {
+      if (existing.status?.toUpperCase() === 'ACTIVE') {
+        return {
+          errors: {
+            apiRes: {
+              status: false,
+              msg: "This email is already subscribed to our newsletter.",
+            },
+          },
+        };
+      }
+      // Re-subscribe if previously unsubscribed
+      const { error } = await supabase
+        .from('newsletter_subscribers')
+        .update({ status: 'ACTIVE' })
+        .eq('id', existing.id);
+
+      if (error) throw new Error(error.message);
+
       return {
         errors: {
           apiRes: {
-            status: false,
-            msg: (error.message as string) || "Something went wrong",
+            status: true,
+            msg: "Welcome back! You have been re-subscribed successfully.",
           },
         },
       };
     }
 
-    const body = result?.body as Record<string, unknown>;
-    const bodyData = body?.data as Record<string, unknown>;
+    // New subscriber
+    const { error } = await supabase
+      .from('newsletter_subscribers')
+      .insert([{ email, status: 'ACTIVE' }]);
+
+    if (error) throw new Error(error.message);
 
     return {
       errors: {
         apiRes: {
           status: true,
-          msg: (bodyData?.message as string) || "Subscription successful!",
+          msg: "You have successfully subscribed to our newsletter!",
         },
       },
     };
-  } catch {
+  } catch (err: any) {
     return {
       errors: {
         apiRes: {
           status: false,
-          msg: "Unexpected error occurred. Please try again.",
+          msg: err?.message || "An unexpected error occurred. Please try again.",
         },
       },
     };

@@ -12,9 +12,8 @@ import {
   PRODUCT_TYPE,
 } from "@/utils/constants";
 import HeroCarousel from "@/components/common/slider/HeroCarousel";
-import { GET_PRODUCT_BY_URL_KEY } from "@/graphql";
+import { createClient } from "@/utils/supabase/server";
 import { isArray } from "@/utils/type-guards";
-import { cachedProductRequest } from "@/utils/hooks/useCache";
 import {
   ProductNode,
   ProductVariantNode,
@@ -27,7 +26,7 @@ import { MobileSearchBar } from "@components/layout/navbar/MobileSearch";
 import { HeroCarouselShimmer } from "@components/common/slider";
 
 const productCache = new LRUCache<ProductNode>(100, 10);
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 export interface SingleProductResponse {
   product: ProductNode;
@@ -39,34 +38,61 @@ interface VariantImage {
 }
 
 async function getSingleProduct(urlKey: string) {
-  const cachedProduct = productCache.get(urlKey);
-  if (cachedProduct) {
-    return cachedProduct;
+  const supabase = await createClient();
+  let query = supabase.from('products').select('*');
+
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  if (uuidRegex.test(urlKey)) {
+    query = query.or(`slug.eq.${urlKey},id.eq.${urlKey}`);
+  } else {
+    query = query.eq('slug', urlKey);
   }
 
-  try {
-    const dataById = await cachedProductRequest<SingleProductResponse>(
-      urlKey,
-      GET_PRODUCT_BY_URL_KEY,
-      { urlKey: urlKey },
-    );
+  const { data: product, error } = await query.single();
 
-    const product = dataById?.product || null;
-    if (product) {
-      productCache.set(urlKey, product);
-    }
-    return product;
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error("Error fetching product:", {
-        message: error.message,
-        urlKey,
-        graphQLErrors: (error as unknown as Record<string, unknown>)
-          .graphQLErrors,
-      });
-    }
-    return null;
+  if (error) {
+    console.error("Supabase Error fetching product:", error);
   }
+
+  if (!product) return null;
+
+  const productImages = Array.isArray(product.images) ? [...product.images] : [];
+  if (product.image_url && !productImages.includes(product.image_url)) {
+    productImages.unshift(product.image_url);
+  }
+
+  return {
+    id: product.id,
+    name: product.name,
+    sku: product.sku || product.id,
+    urlKey: product.slug || product.id,
+    description: product.description || "",
+    shortDescription: product.description?.substring(0, 150) || "",
+    type: "simple",
+    price: product.mrp || product.sale_price || 0,
+    minimumPrice: product.sale_price || product.mrp || 0,
+    specialPrice: product.sale_price || null,
+    baseImageUrl: product.image_url || productImages[0] || "",
+    orderCount: 0,
+    rating: product.rating || 0,
+    reviewCount: product.reviews_count || 0,
+    quickAttributes: [
+      { label: "Made in", value: product.made_in },
+      { label: "Design", value: product.design },
+      { label: "Delivery", value: product.delivery_info || "Standard" },
+    ].filter(attr => attr.value),
+    variants: {
+      edges: productImages.map((img: string, idx: number) => ({
+        node: {
+          baseImageUrl: img,
+          name: `${product.name} image ${idx + 1}`
+        }
+      }))
+    },
+    reviews: { edges: [] },
+    colors: product.colors || [],
+    stock_status: product.stock_status || "IN_STOCK"
+  } as unknown as ProductNode;
 }
 
 export default async function ProductPage({
@@ -89,14 +115,14 @@ export default async function ProductPage({
     sku: product?.sku,
   };
 
-    const reviews = Array.isArray(product?.reviews?.edges)
+  const reviews = Array.isArray(product?.reviews?.edges)
     ? product?.reviews.edges.map((e) => e.node)
     : [];
 
   const VariantImages = isArray(product?.variants?.edges)
     ? product?.variants.edges.map(
-        (edge: { node: ProductVariantNode }) => edge.node,
-      )
+      (edge: { node: ProductVariantNode }) => edge.node,
+    )
     : [];
 
   return (
@@ -108,42 +134,44 @@ export default async function ProductPage({
         }}
         type="application/ld+json"
       />
-      <div className="flex flex-col gap-y-4 rounded-lg pb-0 pt-4 sm:gap-y-6 md:py-7.5 lg:flex-row w-full max-w-screen-2xl mx-auto px-4 xss:px-7.5 lg:gap-8">
-        <div className="h-full w-full max-w-[885px] max-1366:max-w-[650px] max-lg:max-w-full">
-          <Suspense fallback={<HeroCarouselShimmer />}>
-            {isArray(VariantImages) ? (
-              <HeroCarousel
-                images={
-                  (VariantImages as unknown as VariantImage[])?.map(
-                    (image) => ({
-                      src:
-                        getImageUrl(image.baseImageUrl, baseUrl, NOT_IMAGE) ||
-                        "",
-                      altText: image.name || "",
-                    }),
-                  ) || []
-                }
+      <div className="w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-10 xl:p-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch h-full">
+          <div className="flex flex-col h-full w-full">
+            <Suspense fallback={<HeroCarouselShimmer />}>
+              {isArray(VariantImages) ? (
+                <HeroCarousel
+                  images={
+                    (VariantImages as unknown as VariantImage[])?.map(
+                      (image) => ({
+                        src:
+                          getImageUrl(image.baseImageUrl, baseUrl, NOT_IMAGE) ||
+                          "",
+                        altText: image.name || "",
+                      }),
+                    ) || []
+                  }
+                />
+              ) : (
+                <HeroCarousel
+                  images={[
+                    {
+                      src: imageUrl || "",
+                      altText: product?.name || "product image",
+                    },
+                  ]}
+                />
+              )}
+            </Suspense>
+          </div>
+          <div className="flex flex-col h-full w-full">
+            <Suspense fallback={<ProductDetailSkeleton />}>
+              <ProductInfo
+                product={product as ProductData}
+                slug={fullPath}
+                reviews={reviews as any}
               />
-            ) : (
-              <HeroCarousel
-                images={[
-                  {
-                    src: imageUrl || "",
-                    altText: product?.name || "product image",
-                  },
-                ]}
-              />
-            )}
-          </Suspense>
-        </div>
-        <div className="basis-full lg:basis-4/6">
-          <Suspense fallback={<ProductDetailSkeleton />}>
-            <ProductInfo
-              product={product as ProductData}
-              slug={fullPath}
-              reviews={reviews as any}
-            />
-          </Suspense>
+            </Suspense>
+          </div>
         </div>
       </div>
       <Suspense fallback={<RelatedProductSkeleton />}>

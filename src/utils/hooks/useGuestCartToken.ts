@@ -25,7 +25,6 @@ export const useGuestCartToken = () => {
 
     tokenPromiseRef.current = (async () => {
       if (tokenCreatedRef.current) {
-        // Return existing raw token from cookie
         const cookieVal = getNativeCookie(GUEST_CART_TOKEN);
         if (cookieVal) {
           const isGuest = getNativeCookie(IS_GUEST) !== "false";
@@ -37,34 +36,23 @@ export const useGuestCartToken = () => {
       tokenCreatedRef.current = true;
 
       try {
-        const res = await fetchHandler({
-          url: "graphql",
-          method: "POST",
-          body: { operationName: "CreateCart" },
-          contentType: true,
-        });
-
-        const cart = res?.data?.createCartToken?.cartToken;
-        if (!cart) {
-          tokenCreatedRef.current = false;
-          return null;
-        }
+        // Generate a local session token - no external server needed
+        const cartId = Date.now();
+        const sessionToken = `local_cart_${Math.random().toString(36).substring(2)}_${cartId}`;
 
         const newToken = encodeJWT({
-          sessionToken: cart.sessionToken,
-          cartId: cart.id,
-          isGuest: cart.isGuest,
+          sessionToken,
+          cartId,
+          isGuest: true,
         });
-        const newCartId = Number(cart.id);
 
         setCookie(GUEST_CART_TOKEN, newToken);
-        setCookie(GUEST_CART_ID, String(newCartId));
-        setCookie(IS_GUEST, String(cart?.isGuest));
+        setCookie(GUEST_CART_ID, String(cartId));
+        setCookie(IS_GUEST, "true");
 
-        // State and return should be the RAW token
-        setToken(cart.sessionToken);
-        setCartId(newCartId);
-        return cart.sessionToken;
+        setToken(sessionToken);
+        setCartId(cartId);
+        return sessionToken;
       } catch (e) {
         console.error("Error creating guest token:", e);
         tokenCreatedRef.current = false;
@@ -75,8 +63,6 @@ export const useGuestCartToken = () => {
     })();
 
     return tokenPromiseRef.current;
-
-
   };
 
   const resetGuestToken = async () => {

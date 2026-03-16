@@ -6,6 +6,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { createUrl, safeParse } from "@utils/helper";
 import Image from "next/image";
 import Link from "next/link";
+import { useAppSelector } from "@/store/hooks";
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -20,6 +21,8 @@ export default function CartItemAccordion({
   const cart = Array.isArray(cartItems?.items?.edges)
     ? cartItems?.items?.edges
     : [];
+
+  const cartDetail = useAppSelector((state) => state.cartDetail);
 
   const scrollTo = useScrollTo();
 
@@ -60,7 +63,7 @@ export default function CartItemAccordion({
             <Price
               className=""
               amount={cartItems?.grandTotal || "0"}
-              currencyCode={"USD"}
+              currencyCode={"PKR"}
             />
           }
         >
@@ -103,13 +106,18 @@ export default function CartItemAccordion({
                               {item?.node?.sku}
                             </p>
                           ) : null}
+                          {cartDetail.itemColors && cartDetail.itemColors[item?.node?.product?.id || item?.node?.product_id] && (
+                              <p className="text-sm font-normal text-neutral-500 dark:text-neutral-400 mt-0.5">
+                                  Color: <span className="font-medium text-black dark:text-white">{cartDetail.itemColors[item?.node?.product?.id || item?.node?.product_id]}</span>
+                              </p>
+                          )}
                         </div>
                       </Link>
                       <div className="flex h-16 flex-col justify-between text-black/[60%] dark:!text-neutral-300">
                         <Price
                           className="flex justify-end space-y-2 text-right text-sm"
                           amount={item?.node?.price}
-                          currencyCode={"USD"}
+                          currencyCode={"PKR"}
                         />
                       </div>
                     </div>
@@ -125,7 +133,7 @@ export default function CartItemAccordion({
                 <Price
                   className="text-right text-base text-black dark:text-white"
                   amount={cartItems?.subtotal || "0"}
-                  currencyCode={"USD"}
+                  currencyCode={"PKR"}
                 />
               </div>
               <div className="mb-3 flex items-center justify-between pb-1 pt-1">
@@ -136,7 +144,7 @@ export default function CartItemAccordion({
                   <Price
                     amount={cartItems?.shippingAmount || "0"}
                     className="text-right text-base text-black dark:text-white"
-                    currencyCode={"USD"}
+                    currencyCode={"PKR"}
                   />
                 ) : (
                   <p className="text-right text-base">
@@ -149,7 +157,7 @@ export default function CartItemAccordion({
                 <Price
                   className="text-right text-base text-black dark:text-white"
                   amount={cartItems?.grandTotal || "0"}
-                  currencyCode={"USD"}
+                  currencyCode={"PKR"}
                 />
               </div>
             </div>
@@ -159,3 +167,4 @@ export default function CartItemAccordion({
     </div>
   );
 }
+
